@@ -13,17 +13,18 @@
 
 import argparse, json, sys, textwrap, urllib2
 
-parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
-								description='Build DocBook itemizedlist from JIRA query',
-								epilog=textwrap.dedent('''
-									Quote the URLs using 's.
-									
-									Fixed bugs in OpenDJ 2.5.0:
-									    'http://bugster.forgerock.org/jira/rest/api/2/search?jql=project+%3D+OPENDJ+AND+fixVersion+%3D+%222.5.0%22+AND+component+%21%3D+documentation+AND+type+%3D+Bug+and+resolution+%3D+Fixed+and+priority+%21%3D+Trivial&startAt=0&maxResults=200&fields=summary'
-									
-									Open issues in OpenDJ 2.5.0:
-										'http://bugster.forgerock.org/jira/rest/api/2/search?jql=project+%3D+OpenDJ+and+affectedVersion+%3D+%222.5.0%22+and+(resolution+%3D+Unresolved+or+(resolution+%3D+fixed+and+fixVersion+!%3D+%222.5.0%22))+and+component+!%3D+documentation+and+type+%3D+Bug&startAt=0&maxResults=200&fields=summary'
-								'''))
+parser = argparse.ArgumentParser(
+	formatter_class=argparse.RawDescriptionHelpFormatter,
+	description='Build DocBook itemizedlist from JIRA query',
+	epilog=textwrap.dedent('''
+		Quote the URLs using 's.
+		
+		Fixed bugs in OpenDJ 2.5.0:
+		'http://bugster.forgerock.org/jira/rest/api/2/search?jql=project+%3D+OPENDJ+AND+fixVersion+%3D+%222.5.0%22+AND+component+%21%3D+documentation+AND+type+%3D+Bug+and+resolution+%3D+Fixed+and+priority+%21%3D+Trivial&startAt=0&maxResults=200&fields=summary'
+		
+		Open issues in OpenDJ 2.5.0:
+		'http://bugster.forgerock.org/jira/rest/api/2/search?jql=project+%3D+OpenDJ+and+affectedVersion+%3D+%222.5.0%22+and+(resolution+%3D+Unresolved+or+(resolution+%3D+fixed+and+fixVersion+!%3D+%222.5.0%22))+and+component+!%3D+documentation+and+type+%3D+Bug&startAt=0&maxResults=200&fields=summary'
+	'''))
 parser.add_argument('url', help='JIRA search URL returning JSON that contains issues.')
 args = parser.parse_args()
 
