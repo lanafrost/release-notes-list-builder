@@ -12,6 +12,7 @@
 #     Copyright 2012 ForgeRock AS
 
 import argparse, ConfigParser, json, os, sys, urllib2
+from xml.sax.saxutils import escape
 
 def clearTerminal():
 	os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
@@ -62,7 +63,7 @@ def dumpXml(url, outfile):
 	# This part depends on the JIRA JSON object's structure...
 	for issue in jira["issues"]:
 		id = issue["key"]
-		desc = issue["fields"]["summary"]
+		desc = escape(issue["fields"]["summary"])
 
 		outfile.write('   <listitem><para><link xlink:href="https://bugster.forgerock.org/jira/browse/')
 		outfile.write(id)
