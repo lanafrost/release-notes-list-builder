@@ -47,35 +47,40 @@ def getSelection(queries):
 	
 		return answer
 
-def dumpXml(url):
+def dumpXml(url, outfile):
 	response = urllib2.urlopen(url).read()
 	jira = json.loads(response)
 
-	clearTerminal()
+	if outfile == sys.stdout:
+		clearTerminal()
 	
-	print '  <!-- List generated using ', url, '-->'
-	print '  <itemizedlist>'
+	outfile.write('  <!-- List generated using ')
+	outfile.write(url)
+	outfile.write('-->\n')
+	outfile.write('  <itemizedlist>\n')
 	
+	# This part depends on the JIRA JSON object's structure...
 	for issue in jira["issues"]:
 		id = issue["key"]
 		desc = issue["fields"]["summary"]
-		sys.stdout.write('   <listitem><para><link xlink:href="https://bugster.forgerock.org/jira/browse/')
-		sys.stdout.write(id)
-		sys.stdout.write('" xlink:show="new">')
-		sys.stdout.write(id)
-		sys.stdout.write('</link>: ')
-		sys.stdout.write(desc)
-		sys.stdout.write('</para></listitem>\n')
-		sys.stdout.flush()
+
+		outfile.write('   <listitem><para><link xlink:href="https://bugster.forgerock.org/jira/browse/')
+		outfile.write(id)
+		outfile.write('" xlink:show="new">')
+		outfile.write(id)
+		outfile.write('</link>: ')
+		outfile.write(desc)
+		outfile.write('</para></listitem>\n')
+		outfile.flush()
 	
-	print '  </itemizedlist>'
+	outfile.write('  </itemizedlist>\n')
 	
 	return
 
-# TODO use output file
-#parser = argparse.ArgumentParser()
-#parser.add_argument('file', help='Dump XML output to this file')
-#args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='dump XML output to file', nargs='?',
+							type=argparse.FileType('w'), default=sys.stdout)
+args = parser.parse_args()
 
 config = ConfigParser.RawConfigParser()
 config.read('queries.cfg')	
@@ -84,4 +89,4 @@ queries = config.items('Queries')
 url = queries[getSelection(queries) - 1][1]		# Selection starts at 1.
 												# List index starts at 0.
 												# Tuples are (name, url).
-dumpXml(url)
+dumpXml(url, args.file)
