@@ -19,7 +19,6 @@ def clearTerminal():
 	return
 
 def getSelection(queries):
-	config = ConfigParser.RawConfigParser()
 	totalItems = len(queries) + 1
 	
 	clearTerminal()
@@ -42,7 +41,7 @@ def getSelection(queries):
 	
 		if not answer in range(1, totalItems):
 			print
-			print 'You selected:', answer, '(valid range: 1 -', totalItems, ')'
+			print 'You selected:', answer, '(valid range: 1 -', totalItems - 1, ')'
 			print
 			continue
 	
@@ -84,6 +83,7 @@ parser.add_argument('file', help='dump XML output to file', nargs='?',
 args = parser.parse_args()
 
 config = ConfigParser.RawConfigParser()
+config.optionxform=str
 config.read('queries.cfg')	
 queries = config.items('Queries')
 
