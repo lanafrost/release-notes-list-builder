@@ -11,7 +11,7 @@
 #
 #     Copyright 2012 ForgeRock AS
 
-import argparse, ConfigParser, json, os, sys, urllib2
+import argparse, datetime, ConfigParser, json, os, sys, urllib2
 from xml.sax.saxutils import escape
 
 def clearTerminal():
@@ -48,13 +48,16 @@ def getSelection(queries):
 		return answer
 
 def dumpXml(url, outfile):
+	timestamp = datetime.datetime.now()
 	response = urllib2.urlopen(url).read()
 	jira = json.loads(response)
 
 	if outfile == sys.stdout:
 		clearTerminal()
 	
-	outfile.write('  <!-- List generated using ')
+	outfile.write('  <!-- List generated at ')
+	outfile.write(timestamp.strftime('%H:%M:%S %Y%m%d'))
+	outfile.write(' using ')
 	outfile.write(url)
 	outfile.write('-->\n')
 	outfile.write('  <itemizedlist>\n')
