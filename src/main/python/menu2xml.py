@@ -9,7 +9,7 @@
 # information:
 #     Portions Copyright [yyyy] [name of copyright owner]
 #
-#     Copyright 2012 ForgeRock AS
+#     Copyright 2012-2013 ForgeRock AS
 
 import argparse, datetime, ConfigParser, json, os, sys, urllib2
 from xml.sax.saxutils import escape
@@ -20,9 +20,10 @@ def clearTerminal():
 
 def getSelection(queries):
 	totalItems = len(queries) + 1
-	
+
 	clearTerminal()
 
+	answer = 0
 	while True:
 		print 'List of available JIRA queries'
 		print '=============================='
@@ -32,20 +33,20 @@ def getSelection(queries):
 			print '\t', i, ')' , k
 			i = i+1
 		print
-				
+
 		try:
-			answer = int(raw_input('Enter your selection: '))
+			answer = raw_input('Enter your selection: ')
 		except ValueError:
 			print 'Invalid selection:', answer
 			continue
-	
-		if not answer in range(1, totalItems):
+
+		if not answer.isdigit() or not int(answer) in range(1, totalItems):
 			print
 			print 'You selected:', answer, '(valid range: 1 -', totalItems - 1, ')'
 			print
 			continue
 	
-		return answer
+		return int(answer)
 
 def dumpXml(url, outfile):
 	timestamp = datetime.datetime.now()
