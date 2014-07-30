@@ -5,6 +5,9 @@ Regarding the Python scripts:
 
 *   `./jira2xml.py jira-url` contacts JIRA and dumps an `<itemizedlist>`
     to standard out. Make sure URLs are correct and quoted with 's.
+    Also make sure URLs work as an anonymous user.
+    (Any documentation you publish should contain only those issues
+    viewable by any anonymous user.)
 *   `./menu2xml.py` reads `queries.cfg` in the same directory
     as the script and lets you select a JIRA query URL from a list.
     If you give this script an output file, it dumps the `<itemizedlist>`
@@ -38,4 +41,4 @@ To view a copy of this license, visit
 or send a letter to Creative Commons, 444 Castro Street,
 Suite 900, Mountain View, California, 94041, USA.
 
-Copyright 2012 ForgeRock AS
+Copyright 2012-2014 ForgeRock AS

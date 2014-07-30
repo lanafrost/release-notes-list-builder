@@ -58,7 +58,7 @@ def dumpWikiText(url, outfile):
 	# This part depends on the JIRA JSON object's structure...
 	for issue in jira["issues"]:
 		id = issue["key"]
-		desc = escape(issue["fields"]["summary"])
+		desc = escape(issue["fields"]["summary"]).encode('utf-8')
 
 		outfile.write('* [')
 		outfile.write(id)
