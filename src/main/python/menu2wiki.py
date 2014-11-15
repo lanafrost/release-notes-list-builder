@@ -9,9 +9,9 @@
 # information:
 #     Portions Copyright [yyyy] [name of copyright owner]
 #
-#     Copyright 2012-2013 ForgeRock AS
+#     Copyright 2012-2014 ForgeRock AS
 
-import argparse, ConfigParser, json, os, sys, urllib2
+import argparse, ConfigParser, json, os, sys, urllib, urllib2
 from xml.sax.saxutils import escape
 
 def clearTerminal():
@@ -54,7 +54,7 @@ def dumpWikiText(url, outfile):
 
 	if outfile == sys.stdout:
 		clearTerminal()
-	
+
 	# This part depends on the JIRA JSON object's structure...
 	for issue in jira["issues"]:
 		id = issue["key"]
@@ -68,7 +68,7 @@ def dumpWikiText(url, outfile):
 		outfile.write(desc)
 		outfile.write('\n')
 		outfile.flush()
-	
+
 	return
 
 parser = argparse.ArgumentParser()
@@ -78,10 +78,15 @@ args = parser.parse_args()
 
 config = ConfigParser.RawConfigParser()
 config.optionxform=str
-config.read('queries.cfg')	
+config.read('queries.cfg')
 queries = config.items('Queries')
 
-url = queries[getSelection(queries) - 1][1]		# Selection starts at 1.
+pre  = "http://bugster.forgerock.org/jira/rest/api/2/search?jql="
+post = "&startAt=0&maxResults=500&fields=summary"
+
+query = queries[getSelection(queries) - 1][1]	# Selection starts at 1.
 												# List index starts at 0.
-												# Tuples are (name, url).
+												# Tuples are (name, query).
+url = pre + urllib.quote_plus(query) + post
+
 dumpWikiText(url, args.file)

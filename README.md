@@ -1,30 +1,34 @@
-This transforms a JSON format issues list from JIRA into a DocBook itemizedlist
-element for inclusion in release notes.
+# Release Notes List Builder
 
-Regarding the Python scripts:
+This transforms a JSON format issues list from JIRA
+into a DocBook <itemizedlist> block element for inclusion in release notes.
 
-*   `./jira2xml.py jira-url` contacts JIRA and dumps an `<itemizedlist>`
-    to standard out. Make sure URLs are correct and quoted with 's.
+To prepare your queries, edit them in JIRA's advanced mode,
+and then copy them to `src/main/python/queries.cfg`.
+
+Use the Python scripts under `src/main/python`:
+
+*   `./menu2xml.py` reads `queries.cfg` in the same directory as the script
+    and lets you select a JIRA query from a list.
+    If you pass a file name argument, it dumps the list into the file.
+*   `./menu2wiki.py` is like `./menu2xml.py`,
+    but outputs a list in the format used in JIRA and Confluence.
+*   `./jira2xml.py jira-url` dumps an `<itemizedlist>` to standard out.
+    Make sure URLs are correct and quoted with 's.
     Also make sure URLs work as an anonymous user.
-    (Any documentation you publish should contain only those issues
-    viewable by any anonymous user.)
-*   `./menu2xml.py` reads `queries.cfg` in the same directory
-    as the script and lets you select a JIRA query URL from a list.
-    If you give this script an output file, it dumps the `<itemizedlist>`
-    into the file.
+    (Any documentation you publish should contain
+    only those issues viewable by any anonymous user.)
 
 An example with `./menu2xml.py` follows.
 
-	$ ls
-	jira2xml.py	menu2xml.py	queries.cfg
 	$ ./menu2xml.py output.xml
-	
+
 	List of available JIRA queries
 	==============================
-	
+
 		1 ) opendj 2.5.0 fixed bugs
 		2 ) opendj 2.5.0 open issues
-	
+
 	Enter your selection: 2
 	$ cat output.xml
 	  <!-- List generated using http://bugster.forgerock.org/jira...
