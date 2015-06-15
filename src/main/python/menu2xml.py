@@ -64,6 +64,7 @@ def dumpXml(url, outfile):
 	outfile.write('  <itemizedlist>\n')
 
 	# This part depends on the JIRA JSON object's structure...
+	count = 0
 	for issue in jira["issues"]:
 		id = issue["key"]
 		desc = escape(issue["fields"]["summary"]).encode('utf-8')
@@ -76,8 +77,10 @@ def dumpXml(url, outfile):
 		outfile.write(desc)
 		outfile.write('</para></listitem>\n')
 		outfile.flush()
+		count += 1
 
 	outfile.write('  </itemizedlist>\n')
+	outfile.write('  <!-- Issue count: ' + str(count) + ' -->\n')
 
 	return
 
