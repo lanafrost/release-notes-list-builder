@@ -48,7 +48,7 @@ def getSelection(queries):
 
 		return int(answer)
 
-def dumpXml(url, outfile):
+def dumpXml(url, query, outfile):
 	timestamp = datetime.datetime.now()
 	response = urllib2.urlopen(url).read()
 	jira = json.loads(response)
@@ -80,6 +80,7 @@ def dumpXml(url, outfile):
 		count += 1
 
 	outfile.write('  </itemizedlist>\n')
+	outfile.write('  <!-- Raw JIRA query: ' + str(query) + ' -->\n')
 	outfile.write('  <!-- Issue count: ' + str(count) + ' -->\n')
 
 	return
@@ -102,4 +103,4 @@ query = queries[getSelection(queries) - 1][1]	# Selection starts at 1.
 												# Tuples are (name, query).
 url = pre + urllib.quote_plus(query) + post
 
-dumpXml(url, args.file)
+dumpXml(url, query, args.file)
